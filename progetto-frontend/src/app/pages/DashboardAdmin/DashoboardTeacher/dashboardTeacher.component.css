@@ -1,0 +1,94 @@
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.btn-check-booking {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #b80d0d, rgba(207, 17, 17, 0.5));
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon-left {
+  font-size: 18px;
+}
+
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-box {
+  visibility: hidden;
+  width: 200px;
+  background-color: #ffffff;
+  color: #000;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+}
+
+.booking-id {
+  font-weight: bold;
+  color: #b80d0d;
+  cursor: default;
+}
+
+.accept-button-minimal {
+  background-color: #28a745;
+  color: white;
+  border: 2px solid transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.accept-button-minimal:hover {
+  background-color: #fff;
+  color: #28a745;
+  border-color: #28a745;
+  transform: scale(1.05);
+}
+
+.guide-highlight {
+  outline: 3px solid #d8be12;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  z-index: 9998;
+  position: relative;
+}

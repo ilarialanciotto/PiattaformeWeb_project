@@ -1,0 +1,8 @@
+body {
+  background-image: url('assets/freepik__the-style-is-candid-image-photography-with-natural__97355.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}

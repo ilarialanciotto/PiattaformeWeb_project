@@ -1,0 +1,26 @@
+<app-logo> </app-logo>
+<div class="register-container">
+  <h2>Register</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Name</label>
+      <input class="form-control" [(ngModel)]="user.name" name="nome" required>
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input class="form-control" type="email" [(ngModel)]="user.email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label>Password</label>
+      <input class="form-control" type="password" [(ngModel)]="user.password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <label> Teacher code</label>
+      <input class="form-control" [(ngModel)]="user.teacherCode" name="codiceDocente">
+    </div>
+    <button class="btn btn-primary">Registrati</button>
+    <p class="mt-3 text-success" *ngIf="success">{{ success }}</p>
+    <p class="mt-3 text-danger" *ngIf="error">{{ error }}</p>
+  </form>
+</div>
+

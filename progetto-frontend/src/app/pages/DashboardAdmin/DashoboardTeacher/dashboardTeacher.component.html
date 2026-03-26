@@ -1,0 +1,26 @@
+<button class="btn-check-booking" (click)="bookingCheck()" [ngClass]="{ 'guide-highlight': guideStep === 6 }">
+  Booking check
+</button>
+<div *ngIf="toAccept">
+    <div
+      *ngFor="let booking of toAccept"
+      class="booking-card">
+      <div class="tooltip-wrapper">
+        <span class="booking-id" [ngClass]="{ 'guide-highlight': guideStep === 7 }">
+          ID: {{ booking.id }}
+        </span>
+        <div class="tooltip-box" >
+          <p><strong>ID:</strong> {{ booking.id }}</p>
+          <p><strong>Date:</strong> {{ booking.bookingDate }}</p>
+          <p><strong>Lab:</strong> {{ booking.laboratoryID }}</p>
+          <p><strong>Duration:</strong> {{ booking.duration }}</p>
+          <p><strong>Student:</strong> {{ booking.userID }}</p>
+          <p> <strong>  {{booking.seats}} of {{booking.laboratorySeats}} </strong></p>
+        </div>
+      </div>
+      <button class="accept-button-minimal" (click)="accept(booking.id)">
+        Accept
+      </button>
+    </div>
+  <br>
+  </div>

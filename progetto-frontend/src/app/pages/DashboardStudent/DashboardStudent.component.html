@@ -1,0 +1,52 @@
+<div class="controls">
+  <div class="action-container better" [ngClass]="{ 'guide-highlight': guideStep === 7 }">
+    <h5 class="panel-title">Classroom access</h5>
+    <div class="code-input-group">
+      <label for="codice">Code</label>
+      <input id="codice" [(ngModel)]="insertCode" name="codice" class="form-control code-input" required>
+    </div>
+    <div class="action-buttons">
+      <button class="azione-button entra better-btn" [disabled]="!selectedAula" (click)="enterClassroom()" style="flex:1;">
+        <span class="material-icons">Enter</span>
+      </button>
+      <div class="classroom-active" *ngIf="enterClass!=-1" (click)="exitClassroom()" style="flex:1; cursor:pointer;">
+        <h6><i class="fa fa-door-open"></i>Current classroom :</h6>
+        <div class="classroom-active-box">
+          <span class="classroom-name">{{ enterClass }}</span>
+          <span class="badge badge-success">Exit</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="messageBoard">
+    <span class="refresh-icon" (click)="checkCode()" [ngClass]="{ 'guide-highlight': guideStep === 6 }">⟳</span>
+    <div *ngIf="codes" class="code-display">
+      <strong>Code received:</strong>
+      <pre>{{ codes }}</pre>
+    </div>
+  </div>
+  <div [ngClass]="{ 'guide-highlight': guideStep === 8 }">
+    <div *ngIf="bookings && bookings.length > 0" class="booking-container">
+      <h6 class="title-section">Booking</h6>
+      <div class="card-list">
+        <div *ngFor="let b of bookings" class="booking-card">
+          <div class="card-icon">
+            <i class="fa fa-calendar-check"></i>
+          </div>
+          <div class="card-content" >
+            <div class="card-title">Booking : {{ b.id }}</div>
+            <div class="card-details">
+              <span><i class="fa fa-calendar-alt"></i> {{ b.bookingDate }}</span>
+              <span><i class="fa fa-clock"></i> hours: {{ b.bookingTime }}</span>
+              <span><i class="fa fa-hourglass-half"></i> Duration: {{ b.duration }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!bookings || bookings.length === 0" class="no-booking">
+      <i class="fa fa-info-circle"></i>
+      <p>No booking at the moment</p>
+    </div>
+  </div>
+</div>

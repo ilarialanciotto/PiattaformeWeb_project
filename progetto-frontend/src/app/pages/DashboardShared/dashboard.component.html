@@ -1,0 +1,204 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<app-guide
+  [(guideStep)]="guideStep"
+   [role]="role"></app-guide>
+<body>
+<div class="unical-top-bar">
+  <div class="logo-section">
+    <img class="unical-logo" src="https://unical.esse3.cineca.it/img/layout/logo.png?v=24.06.00" alt="Logo UNICAL">
+  </div>
+  <button (click)="openSidebar()" id="openSidebarButton" class="menu-toggle-button">
+    <i class="fas fa-home" [ngClass]="{ 'guide-highlight': guideStep === 5 }"></i></button>
+</div>
+<div class="overlay" [class.visible]="isSidebarOpen" (click)="closeSidebar()"></div>
+<div class="right-slide-sidebar" [class.open]="isSidebarOpen">
+  <h3>Welcome</h3>
+  <div *ngIf="currentUser" class="user-card">
+    <div class="user-avatar">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="user-details">
+      <h5>{{ currentUser.username }}</h5>
+      <p class="text-muted">{{ currentUser.role }}</p>
+    </div>
+    <div class="user-buttons">
+      <button (click)="onSettings()" class="btn btn-sm btn-warning w-100 mb-2">
+        <i class="fas fa-pen"></i> Change
+      </button>
+      <button (click)="onLogout()" class="btn btn-sm btn-danger w-100">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+    <div id="myModal" class="modal" *ngIf="showSettings">
+      <div class="modal-content">
+        <button class="close-button" (click)="offSettings()">&times;</button>
+        <h3>Modify email and password</h3>
+        <form id="profileForm">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" [(ngModel)]="newEmail" required>
+          <label for="password">New password:</label>
+          <input type="password" id="password" name="password" [(ngModel)]="newPassword" required>
+          <label for="confirmPassword">Confirm new password:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword" required>
+          <div align="center">
+            <br>
+            <button type="submit" class="btn btn-success w-100" (click)="submit()">
+              <i class="fas fa-save"></i> Save change
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<div class="layout-container">
+  <div class="page-wrapper">
+    <div class="container">
+      <div class="top-bar">
+        <button (click)="init()" [ngClass]="{ 'guide-highlight': guideStep === 0 }">Show free classroom</button>
+      </div>
+      <div class="classrooms-list" [ngClass]="{ 'guide-highlight': guideStep === 1}">
+        <div *ngFor="let classroom of freeClassroom" class="result-item" (click)="selectAula(classroom)"
+             [class.selected]="selectedAula?.id === classroom.id">
+          Classroom {{ classroom.cube }}
+        </div>
+        <div class="pagination-controls" >
+          <button (click)="loadFreeClassroom(currentPage - 1)" [disabled]="currentPage-1 <0 " class="btn prev-btn">Previous</button>
+          <span *ngIf="totalItems / pageSize===0">Page {{ currentPage  }} of {{ totalPages   }}</span>
+          <span *ngIf="totalItems / pageSize>0">Page {{ currentPage +1 }} of {{ totalPages  }}</span>
+          <button (click)="loadFreeClassroom(currentPage + 1)" [disabled]="(currentPage+ 1) * pageSize >= totalItems" class="btn next-btn">Next</button>
+        </div>
+      </div>
+      <div class="bottom-section">
+        <div id="details-container" class="details-container" >
+          <div *ngIf="selectedAula">
+            <h3>Classroom details</h3>
+            <p> ID: {{ selectedAula.id }} </p>
+            <p>Name: {{ selectedAula.cube }}</p>
+            <p>Laboratory: {{ selectedAula.laboratory ? 'Yes' : 'No' }}</p>
+            <p>Available Seats: {{ selectedAula.numberOfSeats }}</p>
+            <p>Contents:</p>
+            <ul *ngIf="selectedAula.contents && selectedAula.contents.length > 0">
+              <li *ngFor="let content of selectedAula.contents">
+                {{ content.name }}
+              </li>
+            </ul>
+            <p>floor: {{ selectedAula.floor }}</p>
+            <div *ngIf="selectedAula.personInCharge">
+              <p>person in charge: {{ selectedAula.personInCharge}}</p>
+            </div>
+          </div>
+          <div *ngIf="!selectedAula">
+            Select an available classroom to view the details
+          </div>
+        </div>
+        <div *ngIf="role === ROLE_STUDENT">
+          <app-dashboardStudent
+            [guideStep]="guideStep"
+            [bookings]="bookings"
+            [selectedAula]="selectedAula"
+            (selectedAulaChange)="selectedAula = $event"
+            [headers]="headers"
+            [currentUser]="currentUser"
+            [userSubscription]="userSubscription"
+             ></app-dashboardStudent>
+        </div>
+      <div *ngIf="role === ROLE_ADMIN">
+          <app-dashboardAdmin
+            [selectedAula]="selectedAula"
+            [headers]="headers"
+            [currentUser]="currentUser"
+            [guideStep]="guideStep"
+            [userSubscription]="userSubscription">
+          </app-dashboardAdmin>
+        </div>
+        <div *ngIf="role === ROLE_TEACHER">
+          <app-dashboardTeacher
+            [selectedAula]="selectedAula"
+            [headers]="headers"
+            [currentUser]="currentUser"
+            [guideStep]="guideStep"
+            [userSubscription]="userSubscription">
+          </app-dashboardTeacher>
+        </div>
+      </div>
+      <div class="bottom-section">
+        <div id="booking-container" class="booking-container" *ngIf="selectedAula">
+          <button id="openModalBtn" (click)="showForm = true" [ngClass]="{ 'guide-highlight': guideStep === 2}">Booking</button>
+        </div>
+        <div class="modal" *ngIf="showForm">
+          <div class="modal-content">
+            <span class="close-button" (click)="showForm = false">&times;</span>
+            <h3>Enter the Booking Details</h3>
+            <form (ngSubmit)="bookWithDuration()">
+              <label for="dataPrenotazione">Booking date:</label>
+              <input type="datetime-local" id="dataPrenotazione" name="dataPrenotazione"
+                     [(ngModel)]="bookingDate" required>
+              <label for="durata">Duration:</label>
+              <input type="time" id="durata" name="durata" [(ngModel)]="bookingDuration" required>
+              <br><br>
+              <button type="submit" class="save-note-btn">Confirm Reservation</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="side-panel-v2">
+    <div class="panel-header">
+      <button
+        class="panel-tab-btn"
+        [class.active]="activeView === 'feedback'"
+        (click)="changeView('feedback')" [ngClass]="{ 'guide-highlight': guideStep === 3 }">
+        <i class="fas fa-comment-alt"></i>
+        <span>Feedback</span>
+      </button>
+      <button
+        class="panel-tab-btn"
+        [class.active]="activeView === 'booking'"
+        (click)="changeView('booking')" [ngClass]="{ 'guide-highlight': guideStep === 4 }">
+        <i class="fas fa-calendar-check"></i>
+        <span>My booking</span>
+        <span *ngIf="myBooking.length > 0" class="badge-v2">{{ myBooking.length }}</span>
+      </button>
+    </div>
+    <div class="panel-body">
+      <div class="panel-content" [class.active]="activeView === 'feedback'">
+        <textarea placeholder="Write a feedback..." class="note-area" [(ngModel)]="feedback.feedback"></textarea>
+        <button class="save-note-btn" (click)="insertFeedback()"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+      <div class="panel-content" [class.active]="activeView === 'booking'">
+        <div *ngIf="myBooking.length === 0" class="empty-element">
+          <i class="far fa-calendar-times"></i>
+          <p>You have no active bookings.</p>
+        </div>
+        <div *ngIf="myBooking.length > 0" class="card-list-wrapper">
+          <div *ngFor="let b of myBooking" class="booking-card-v2" (mouseleave)="cancelConfirm()">
+            <div class="card-info">
+              <strong class="card-info-title">ID : {{ b.id }}</strong>
+              <span class="card-info-details">
+                classroom ID : {{b.laboratoryID}}
+                <br>
+              {{ b.bookingDate | date: 'EEEE, d MMM' }} • {{ b.bookingDate | date: 'HH:mm' }}
+                <div *ngIf="b.code != 0 && currentUser?.role != ROLE_STUDENT" class="accepted-message">
+                  <span class="checkmark">✔</span>
+                  <span>Accepted</span>
+                </div>
+            </span>
+            </div>
+            <button class="btn-delete-v2"
+                    [class.confirm-active]="bookingToConfirm === b.id"
+                    (click)="onDeleteBooking(b.id)">
+              <i class="fas" [ngClass]="{'fa-times': bookingToConfirm !== b.id, 'fa-exclamation-triangle': bookingToConfirm === b.id}"></i>
+              <span *ngIf="bookingToConfirm === b.id" class="text-confirm">Sure? </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+

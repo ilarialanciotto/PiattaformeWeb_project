@@ -1,0 +1,23 @@
+<div class="teacher-assign-section" *ngIf="selectedAula" [ngClass]="{ 'guide-highlight': guideStep === 8 }">
+  <h3>Assign person in charge to classroom <strong>{{ selectedAula.cube }}</strong></h3>
+  <div class="dropdown-wrapper">
+    <select class="teacher-select" [(ngModel)]="selectedTeacherId" >
+      <option [ngValue]="null" disabled selected>Seleziona un docente</option>
+      <option *ngFor="let teacher of availableTeachers" [ngValue]="teacher.id" >
+        {{ teacher.name }} ({{ teacher.email }})
+      </option>
+    </select>
+    <button class="assign-btn" [disabled]="!selectedTeacherId" (click)="assignTeacherToClassroom(selectedTeacherId)">
+      Assign
+    </button>
+  </div>
+</div>
+<br>
+<app-dashboardTeacher
+  [selectedAula]="selectedAula"
+  [headers]="headers"
+  [currentUser]="currentUser"
+  [guideStep]="guideStep"
+  [userSubscription]="userSubscription">
+</app-dashboardTeacher>
+

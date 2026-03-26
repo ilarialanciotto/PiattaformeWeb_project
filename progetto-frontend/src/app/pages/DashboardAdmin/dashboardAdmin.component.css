@@ -1,0 +1,52 @@
+.teacher-assign-section {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+}
+
+.teacher-assign-section h3 {
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.guide-highlight {
+  outline: 3px solid #d8be12;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  z-index: 9998;
+  position: relative;
+}
+
+
+.dropdown-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teacher-select {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.assign-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.assign-btn:hover {
+  background-color: #218838;
+}
